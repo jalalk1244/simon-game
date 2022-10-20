@@ -3,7 +3,7 @@
  */
 
 const { expect } = require('@jest/globals');
-const { game, newGame, showScore } = require('../game');
+const { game, newGame, showScore, addTurn } = require('../game');
 
 beforeAll(() => {
     let fs = require('fs');
@@ -42,14 +42,14 @@ describe('newGame works correctly', () => {
 
     test('should set game score to zero', () => {
         expect(game.score).toBe(0);
-    })
+    });
     test('should clear the player moves array', () => {
         expect(game.playerMoves.length).toBe(0);
-    })
-    test('should clear the computer sequence array', () => {
-        expect(game.currentGame.length).toBe(0);
+    });
+    test('should be one move in the computer"s array', () => {
+        expect(game.currentGame.length).toBe(1);
     })
     test('should display 0 for the element with id of score', () => {
         expect(document.getElementById("score").innerText).toBe(0);
-    })
+    });
 })
