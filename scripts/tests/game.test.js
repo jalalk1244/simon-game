@@ -3,7 +3,9 @@
  */
 
 const { expect } = require('@jest/globals');
-const { game, newGame, showScore, addTurn, lightsOn, showTurns } = require('../game');
+const { game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn } = require('../game');
+
+jest.spyOn(window, 'alert').mockImplementation(() => {});
 
 beforeAll(() => {
     let fs = require('fs');
@@ -93,5 +95,25 @@ describe('gameplay works correctly', () => {
         showTurns();
         expect(game.turnNumber).toBe(0);
     });
+    test('should increment the score if the turn is correct', () => {
+        game.playerMoves.push(game.currentGame[0]);
+        playerTurn();
+        expect(game.score).toBe(1);
+    });
+    test('should call an alert if the move is wrong', () => {
+        game.playerMoves.push('wrong');
+        playerTurn();
+        expect(window.alert).toBeCalledWith('Wrong move!');
+    });
+    test('should toggle turnInProgress to true', () => {
+        showTurns();
+        expect(game.turnInProgress).toBe(true);
+    });
+    test('clicking during computer sequence should fail', () => {
+        showTurns();
+        game.lastButton = '';
+        document.getElementById('button2').click();
+        expect(game.lastButton).toEqual('');
+    })
 });
 
